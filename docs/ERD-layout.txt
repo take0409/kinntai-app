@@ -1,0 +1,68 @@
+PNG用の見やすいER図レイアウト案
+
+1. 配置
+- 左上: users
+- 右上: attendances
+- 右下: break_times
+- 左下: stamp_correction_requests
+
+2. 線のつなぎ方
+- users.id -> attendances.user_id
+- attendances.id -> break_times.attendance_id
+- attendances.id -> stamp_correction_requests.attendance_id
+- users.id -> stamp_correction_requests.user_id
+- users.id -> stamp_correction_requests.approved_by
+
+3. 線を見やすくするコツ
+- users と attendances は横並び
+- attendances と break_times は縦並び
+- stamp_correction_requests は users の下に置き、attendances と users の両方へ線を伸ばす
+- approved_by の線だけは users から stamp_correction_requests の左辺に接続する
+- user_id の線と approved_by の線が重ならないよう、stamp_correction_requests 側の接続位置を上下にずらす
+
+4. おすすめの見た目
+- テーブル見出しは濃い色
+- カラム部分は白背景
+- PK は "PK"、FK は "FK"、UNIQUE は "UK" と短く表記
+- 線ラベルは user_id / attendance_id / approved_by のみで十分
+
+5. 簡易ワイヤー
+
+    +------------------+          +----------------------+
+    | users            |          | attendances          |
+    |------------------|          |----------------------|
+    | PK id            |--------->| PK id                |
+    | name             |   user_id| FK user_id           |
+    | UK email         |          | work_date            |
+    | is_admin         |          | clock_in_at          |
+    +------------------+          | clock_out_at         |
+          |   \                   | note                 |
+          |    \                  +----------------------+
+          |     \                           |
+          |      \                          | attendance_id
+          |       \                         v
+          |        \               +----------------------+
+          |         \              | break_times          |
+          |          \             |----------------------|
+          |           \----------->| PK id                |
+          |  user_id / approved_by | FK attendance_id     |
+          v                        | started_at           |
+    +---------------------------+  | ended_at             |
+    | stamp_correction_requests |  +----------------------+
+    |---------------------------|
+    | PK id                     |
+    | FK attendance_id          |
+    | FK user_id                |
+    | FK approved_by            |
+    | requested_clock_in_at     |
+    | requested_clock_out_at    |
+    | requested_break_times     |
+    | note                      |
+    | status                    |
+    +---------------------------+
+
+6. PNG出力時の推奨
+- 横長で出力
+- 余白は広め
+- 線の太さは中
+- フォントは 12-14px 程度

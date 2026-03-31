@@ -1,0 +1,35 @@
+@extends('layouts.app')
+
+@section('content')
+    <section class="table-section">
+        <h1 class="section-title">申請一覧</h1>
+        <div class="tab-nav">
+            <a href="?status=pending" class="{{ $status === 'pending' ? 'is-active' : '' }}">承認待ち</a>
+            <a href="?status=approved" class="{{ $status === 'approved' ? 'is-active' : '' }}">承認済み</a>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>状態</th>
+                    <th>名前</th>
+                    <th>対象日時</th>
+                    <th>申請理由</th>
+                    <th>申請日時</th>
+                    <th>詳細</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($requests as $requestItem)
+                    <tr>
+                        <td>{{ $requestItem->status === 'pending' ? '承認待ち' : '承認済み' }}</td>
+                        <td>{{ $requestItem->user->name }}</td>
+                        <td>{{ $requestItem->attendance->work_date->format('Y/m/d') }}</td>
+                        <td>{{ $requestItem->note }}</td>
+                        <td>{{ $requestItem->requested_at->format('Y/m/d') }}</td>
+                        <td><a href="/stamp_correction_request/approve/{{ $requestItem->id }}">詳細</a></td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </section>
+@endsection
