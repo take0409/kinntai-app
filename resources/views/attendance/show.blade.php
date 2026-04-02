@@ -34,7 +34,7 @@
             @if($pendingRequest)
                 <p class="notice-text">承認待ちのため修正はできません。</p>
             @else
-                <div class="detail-actions"><button class="button button--primary">修正</button></div>
+                <div class="detail-actions"><button class="button button-primary">修正</button></div>
             @endif
         </form>
     </section>

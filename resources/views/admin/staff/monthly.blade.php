@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="table-section table-section--wide">
+    <section class="table-section table-section-wide">
         <h1 class="section-title">{{ $user->name }}さんの勤怠</h1>
         <div class="calendar-nav">
             <a href="?month={{ $month->subMonth()->format('Y-m') }}">← 前月</a>
@@ -33,7 +33,7 @@
             </tbody>
         </table>
         <div class="detail-actions">
-            <a href="{{ route('admin.staff.csv', ['user' => $user->id, 'month' => $month->format('Y-m')]) }}" class="button button--primary">CSV出力</a>
+            <a href="{{ route('admin.staff.csv', ['user' => $user->id, 'month' => $month->format('Y-m')]) }}" class="button button-primary">CSV出力</a>
         </div>
     </section>
 @endsection

@@ -2,7 +2,7 @@
 
 @section('content')
     <section class="auth-card">
-        <h1 class="auth-card__title">会員登録</h1>
+        <h1 class="auth-card-title">会員登録</h1>
         <form action="/register" method="post" class="auth-form">
             @csrf
             <div class="field-group">
@@ -24,7 +24,7 @@
                 <label>パスワード確認</label>
                 <input type="password" name="password_confirmation" class="{{ $errors->has('password_confirmation') ? 'input-error' : '' }}">
             </div>
-            <button type="submit" class="button button--primary">登録する</button>
+            <button type="submit" class="button button-primary">登録する</button>
         </form>
         <a href="/login" class="link-text">ログインはこちら</a>
     </section>

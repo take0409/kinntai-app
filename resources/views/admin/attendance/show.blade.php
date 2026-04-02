@@ -30,7 +30,7 @@
                     @error('note')<p class="field-error">{{ $message }}</p>@enderror
                 </div>
             </div>
-            <div class="detail-actions"><button class="button button--primary">修正</button></div>
+            <div class="detail-actions"><button class="button button-primary">修正</button></div>
         </form>
     </section>
 @endsection

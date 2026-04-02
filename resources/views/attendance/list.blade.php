@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="table-section table-section--wide">
+    <section class="table-section table-section-wide">
         <h1 class="section-title">勤怠一覧</h1>
         <div class="calendar-nav">
             <a href="?month={{ $month->subMonth()->format('Y-m') }}">← 前月</a>

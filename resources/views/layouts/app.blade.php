@@ -8,7 +8,7 @@
 </head>
 <body>
     <header class="site-header">
-        <div class="site-header__inner">
+        <div class="site-header-inner">
             <a href="{{ auth()->user()->is_admin ? '/admin/attendance/list' : '/attendance' }}" class="site-logo">
                 <img src="{{ asset('coachtech-logo.png') }}" alt="COACHTECH">
             </a>

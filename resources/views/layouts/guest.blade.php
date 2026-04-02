@@ -8,7 +8,7 @@
 </head>
 <body>
     <header class="site-header">
-        <div class="site-header__inner site-header__inner--guest">
+        <div class="site-header-inner">
             <a href="/login" class="site-logo">
                 <img src="{{ asset('coachtech-logo.png') }}" alt="COACHTECH">
             </a>
@@ -17,7 +17,7 @@
 
     <main class="guest-page">
         @if (session('status') && session('status') !== 'verification-link-sent')
-            <div class="flash-message flash-message--guest">
+            <div class="flash-message flash-message-guest">
                 {{ session('status') }}
             </div>
         @endif

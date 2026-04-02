@@ -13,9 +13,9 @@
             <div class="detail-row"><span>備考</span><strong>{{ $requestItem->note }}</strong></div>
             <div class="detail-actions">
                 @if($requestItem->status === 'pending')
-                    <form action="/stamp_correction_request/approve/{{ $requestItem->id }}" method="post">@csrf<button class="button button--primary">承認</button></form>
+                    <form action="/stamp_correction_request/approve/{{ $requestItem->id }}" method="post">@csrf<button class="button button-primary">承認</button></form>
                 @else
-                    <button class="button button--muted" disabled>承認済み</button>
+                    <button class="button button-muted" disabled>承認済み</button>
                 @endif
             </div>
         </div>

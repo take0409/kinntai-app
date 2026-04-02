@@ -14,7 +14,7 @@ a {
     background: #000;
 }
 
-.site-header__inner {
+.site-header-inner {
     max-width: 1100px;
     margin: 0 auto;
     padding: 16px 24px;
@@ -65,7 +65,7 @@ a {
     padding: 48px 0;
 }
 
-.auth-card__title,
+.auth-card-title,
 .section-title {
     margin: 0 0 32px;
     font-size: 32px;
@@ -129,23 +129,23 @@ textarea {
     cursor: pointer;
 }
 
-.button--primary {
+.button-primary {
     background: #000;
     color: #fff;
 }
 
-.button--light {
+.button-light {
     background: #fff;
     color: #111;
 }
 
-.button--secondary,
-.button--muted {
+.button-secondary,
+.button-muted {
     background: #9ca3af;
     color: #fff;
 }
 
-.button--muted {
+.button-muted {
     cursor: default;
 }
 
@@ -170,30 +170,30 @@ textarea {
     font-weight: 700;
 }
 
-.stamp-card__date {
+.stamp-card-date {
     margin: 24px 0 12px;
     font-size: 40px;
 }
 
-.stamp-card__time {
+.stamp-card-time {
     margin: 0 0 40px;
     font-size: 80px;
     font-weight: 700;
 }
 
-.stamp-card__actions {
+.stamp-card-actions {
     display: flex;
     justify-content: center;
     gap: 32px;
     align-items: center;
 }
 
-.stamp-card__message {
+.stamp-card-message {
     font-size: 24px;
     font-weight: 700;
 }
 
-.table-section--wide {
+.table-section-wide {
     max-width: 980px;
 }
 
@@ -292,9 +292,9 @@ textarea {
 }
 
 @media (max-width: 900px) {
-    .site-header__inner,
+    .site-header-inner,
     .site-nav,
-    .stamp-card__actions,
+    .stamp-card-actions,
     .detail-row,
     .time-pair {
         flex-direction: column;
@@ -304,7 +304,7 @@ textarea {
         grid-template-columns: 1fr;
     }
 
-    .stamp-card__time {
+    .stamp-card-time {
         font-size: 56px;
     }
 }

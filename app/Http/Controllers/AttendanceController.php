@@ -13,10 +13,9 @@ class AttendanceController extends Controller
         $today = now()->timezone(config('app.timezone'));
         $attendance = Attendance::query()
             ->with('breaks')
-            ->firstWhere([
-                'user_id' => $request->user()->id,
-                'work_date' => $today->toDateString(),
-            ]);
+            ->where('user_id', $request->user()->id)
+            ->whereDate('work_date', $today->toDateString())
+            ->first();
 
         return view('attendance.index', [
             'attendance' => $attendance,
@@ -94,9 +93,8 @@ class AttendanceController extends Controller
     {
         return Attendance::query()
             ->with('breaks')
-            ->firstWhere([
-                'user_id' => $request->user()->id,
-                'work_date' => now()->timezone(config('app.timezone'))->toDateString(),
-            ]);
+            ->where('user_id', $request->user()->id)
+            ->whereDate('work_date', now()->timezone(config('app.timezone'))->toDateString())
+            ->first();
     }
 }
