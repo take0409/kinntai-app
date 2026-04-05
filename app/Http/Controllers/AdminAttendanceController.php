@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AdminAttendanceListRequest;
 use App\Http\Requests\AdminAttendanceUpdateRequest;
 use App\Models\Attendance;
 use App\Models\User;
-use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class AdminAttendanceController extends Controller
 {
-    public function index(Request $request)
+    public function index(AdminAttendanceListRequest $request)
     {
-        $date = CarbonImmutable::parse($request->string('date')->toString() ?: now()->toDateString());
+        $date = $request->targetDate();
         $users = User::query()->where('is_admin', false)->orderBy('id')->get();
         $attendances = Attendance::query()
             ->with('breaks')

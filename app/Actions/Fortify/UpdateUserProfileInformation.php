@@ -2,10 +2,10 @@
 
 namespace App\Actions\Fortify;
 
+use App\Http\Requests\UpdateProfileInformationRequest;
 use App\Models\User;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
 
@@ -20,17 +20,15 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      */
     public function update(User $user, array $input): void
     {
-        Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
+        $updateProfileInformationRequest = new UpdateProfileInformationRequest();
+        $updateProfileInformationRequest->setUserResolver(static fn () => $user);
 
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique('users')->ignore($user->id),
-            ],
-        ])->validateWithBag('updateProfileInformation');
+        Validator::make(
+            $input,
+            $updateProfileInformationRequest->rules(),
+            [],
+            $updateProfileInformationRequest->attributes()
+        )->validateWithBag('updateProfileInformation');
 
         if ($input['email'] !== $user->email &&
             $user instanceof MustVerifyEmail) {

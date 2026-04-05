@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AdminStaffAttendanceRequest;
 use App\Models\Attendance;
 use App\Models\User;
-use Carbon\CarbonImmutable;
-use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AdminStaffController extends Controller
@@ -17,11 +16,9 @@ class AdminStaffController extends Controller
         ]);
     }
 
-    public function show(Request $request, User $user)
+    public function show(AdminStaffAttendanceRequest $request, User $user)
     {
-        abort_if($user->is_admin, 404);
-
-        $month = CarbonImmutable::parse($request->string('month')->toString() ?: now()->format('Y-m'));
+        $month = $request->selectedMonth();
         $start = $month->startOfMonth();
         $end = $month->endOfMonth();
         $attendances = Attendance::query()
@@ -47,11 +44,9 @@ class AdminStaffController extends Controller
         ]);
     }
 
-    public function exportCsv(Request $request, User $user): StreamedResponse
+    public function exportCsv(AdminStaffAttendanceRequest $request, User $user): StreamedResponse
     {
-        abort_if($user->is_admin, 404);
-
-        $month = CarbonImmutable::parse($request->string('month')->toString() ?: now()->format('Y-m'));
+        $month = $request->selectedMonth();
         $start = $month->startOfMonth();
         $end = $month->endOfMonth();
         $attendances = Attendance::query()

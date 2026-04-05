@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AttendanceCorrectionRequest;
+use App\Http\Requests\UserAttendanceListRequest;
 use App\Models\Attendance;
 use App\Models\StampCorrectionRequest;
 use Carbon\CarbonImmutable;
@@ -12,9 +13,9 @@ use Illuminate\Support\Carbon;
 
 class UserAttendanceController extends Controller
 {
-    public function index(Request $request)
+    public function index(UserAttendanceListRequest $request)
     {
-        $month = CarbonImmutable::parse($request->string('month')->toString() ?: now()->format('Y-m'));
+        $month = $request->selectedMonth();
         $start = $month->startOfMonth();
         $end = $month->endOfMonth();
 

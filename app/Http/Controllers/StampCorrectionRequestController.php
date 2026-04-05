@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StampCorrectionApprovalRequest;
+use App\Http\Requests\StampCorrectionRequestIndexRequest;
 use App\Models\StampCorrectionRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -9,9 +11,9 @@ use Illuminate\Support\Carbon;
 
 class StampCorrectionRequestController extends Controller
 {
-    public function index(Request $request)
+    public function index(StampCorrectionRequestIndexRequest $request)
     {
-        $status = $request->string('status')->toString() ?: 'pending';
+        $status = $request->statusFilter();
         $query = StampCorrectionRequest::query()
             ->with(['user', 'attendance'])
             ->where('status', $status === 'approved' ? 'approved' : 'pending')
@@ -37,7 +39,7 @@ class StampCorrectionRequestController extends Controller
         ]);
     }
 
-    public function approve(Request $request, StampCorrectionRequest $stampCorrectionRequest): RedirectResponse
+    public function approve(StampCorrectionApprovalRequest $request, StampCorrectionRequest $stampCorrectionRequest): RedirectResponse
     {
         if ($stampCorrectionRequest->status === 'approved') {
             return back();
