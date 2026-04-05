@@ -26,13 +26,13 @@ docker compose exec php php artisan migrate:fresh --seed
 - MySQL 8.4
 - Nginx 1.27
 - Docker / Docker Compose
-- Mailpit
+- MailHog
 
 ## URL
 
 - 一般ユーザー: http://localhost/login
 - 管理者: http://localhost/admin/login
-- Mailpit: http://localhost:8026
+- MailHog: http://localhost:8025
 
 ## ログイン情報
 
