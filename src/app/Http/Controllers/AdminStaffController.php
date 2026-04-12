@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AdminStaffAttendanceRequest;
 use App\Models\Attendance;
 use App\Models\User;
+use Carbon\CarbonImmutable;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AdminStaffController extends Controller
@@ -16,9 +17,11 @@ class AdminStaffController extends Controller
         ]);
     }
 
-    public function show(AdminStaffAttendanceRequest $request, User $user)
+    public function show(Request $request, User $user)
     {
-        $month = $request->selectedMonth();
+        abort_if($user->is_admin, 403);
+
+        $month = $this->selectedMonth($request);
         $start = $month->startOfMonth();
         $end = $month->endOfMonth();
         $attendances = Attendance::query()
@@ -44,9 +47,11 @@ class AdminStaffController extends Controller
         ]);
     }
 
-    public function exportCsv(AdminStaffAttendanceRequest $request, User $user): StreamedResponse
+    public function exportCsv(Request $request, User $user): StreamedResponse
     {
-        $month = $request->selectedMonth();
+        abort_if($user->is_admin, 403);
+
+        $month = $this->selectedMonth($request);
         $start = $month->startOfMonth();
         $end = $month->endOfMonth();
         $attendances = Attendance::query()
@@ -75,5 +80,16 @@ class AdminStaffController extends Controller
 
             fclose($handle);
         }, sprintf('staff_%s_%s.csv', $user->id, $month->format('Ym')));
+    }
+
+    protected function selectedMonth(Request $request): CarbonImmutable
+    {
+        $month = $request->string('month')->toString();
+
+        try {
+            return CarbonImmutable::parse($month !== '' ? $month : now()->format('Y-m'));
+        } catch (\Throwable) {
+            return CarbonImmutable::parse(now()->format('Y-m'));
+        }
     }
 }

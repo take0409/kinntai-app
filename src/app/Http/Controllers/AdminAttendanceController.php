@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AdminAttendanceListRequest;
 use App\Http\Requests\AdminAttendanceUpdateRequest;
 use App\Models\Attendance;
 use App\Models\User;
+use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class AdminAttendanceController extends Controller
 {
-    public function index(AdminAttendanceListRequest $request)
+    public function index(Request $request)
     {
-        $date = $request->targetDate();
+        $date = $this->targetDate($request);
         $users = User::query()->where('is_admin', false)->orderBy('id')->get();
         $attendances = Attendance::query()
             ->with('breaks')
@@ -65,5 +66,16 @@ class AdminAttendanceController extends Controller
     protected function combineDateTime(string $date, string $time): Carbon
     {
         return Carbon::parse("{$date} {$time}", config('app.timezone'));
+    }
+
+    protected function targetDate(Request $request): CarbonImmutable
+    {
+        $date = $request->string('date')->toString();
+
+        try {
+            return CarbonImmutable::parse($date !== '' ? $date : now()->toDateString());
+        } catch (\Throwable) {
+            return CarbonImmutable::parse(now()->toDateString());
+        }
     }
 }

@@ -16,49 +16,45 @@ class RequestValidationFeatureTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_user_attendance_list_validates_month_query(): void
+    public function test_user_attendance_list_ignores_invalid_month_query(): void
     {
         $user = User::factory()->create(['is_admin' => false]);
 
         $this->actingAs($user)
-            ->from('/attendance/list')
             ->get('/attendance/list?month=2026-13')
-            ->assertRedirect('/attendance/list')
-            ->assertSessionHasErrors(['month']);
+            ->assertOk()
+            ->assertSee('勤怠一覧');
     }
 
-    public function test_admin_attendance_list_validates_date_query(): void
+    public function test_admin_attendance_list_ignores_invalid_date_query(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
 
         $this->actingAs($admin)
-            ->from('/admin/attendance/list')
             ->get('/admin/attendance/list?date=2026-99-99')
-            ->assertRedirect('/admin/attendance/list')
-            ->assertSessionHasErrors(['date']);
+            ->assertOk()
+            ->assertSee('勤怠一覧');
     }
 
-    public function test_stamp_correction_list_validates_status_query(): void
+    public function test_stamp_correction_list_ignores_invalid_status_query(): void
     {
         $user = User::factory()->create(['is_admin' => false]);
 
         $this->actingAs($user)
-            ->from('/stamp_correction_request/list')
             ->get('/stamp_correction_request/list?status=waiting')
-            ->assertRedirect('/stamp_correction_request/list')
-            ->assertSessionHasErrors(['status']);
+            ->assertOk()
+            ->assertSee('承認待ち');
     }
 
-    public function test_admin_staff_monthly_pages_validate_month_query(): void
+    public function test_admin_staff_monthly_pages_ignore_invalid_month_query(): void
     {
         $admin = User::factory()->create(['is_admin' => true]);
         $staff = User::factory()->create(['is_admin' => false]);
 
         $this->actingAs($admin)
-            ->from("/admin/attendance/staff/{$staff->id}")
             ->get("/admin/attendance/staff/{$staff->id}?month=2026-14")
-            ->assertRedirect("/admin/attendance/staff/{$staff->id}")
-            ->assertSessionHasErrors(['month']);
+            ->assertOk()
+            ->assertSee($staff->name.'さんの勤怠');
     }
 
     public function test_admin_cannot_open_staff_monthly_page_for_admin_user(): void

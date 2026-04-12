@@ -27,7 +27,13 @@
                         <td>{{ $requestItem->attendance->work_date->format('Y/m/d') }}</td>
                         <td>{{ $requestItem->note }}</td>
                         <td>{{ $requestItem->requested_at->format('Y/m/d') }}</td>
-                        <td><a href="/attendance/detail/{{ $requestItem->attendance_id }}">詳細</a></td>
+                        <td>
+                            @if($isAdmin)
+                                <a href="/stamp_correction_request/approve/{{ $requestItem->id }}">詳細</a>
+                            @else
+                                <a href="/attendance/detail/{{ $requestItem->attendance_id }}">詳細</a>
+                            @endif
+                        </td>
                     </tr>
                 @endforeach
             </tbody>

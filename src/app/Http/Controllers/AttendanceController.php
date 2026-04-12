@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AttendanceActionRequest;
 use App\Models\Attendance;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
-    public function index(AttendanceActionRequest $request)
+    public function index(Request $request)
     {
-        $today = $request->currentTime();
+        $today = now()->timezone(config('app.timezone'));
         $attendance = Attendance::query()
             ->with('breaks')
             ->where('user_id', $request->user()->id)
@@ -24,9 +24,9 @@ class AttendanceController extends Controller
         ]);
     }
 
-    public function clockIn(AttendanceActionRequest $request): RedirectResponse
+    public function clockIn(Request $request): RedirectResponse
     {
-        $now = $request->currentTime();
+        $now = now()->timezone(config('app.timezone'));
         $attendance = Attendance::firstOrNew([
             'user_id' => $request->user()->id,
             'work_date' => $now->toDateString(),
@@ -40,9 +40,9 @@ class AttendanceController extends Controller
         return back()->with('status', '出勤しました。');
     }
 
-    public function startBreak(AttendanceActionRequest $request): RedirectResponse
+    public function startBreak(Request $request): RedirectResponse
     {
-        $attendance = $request->todayAttendance();
+        $attendance = $this->todayAttendance($request);
 
         if (! $attendance || $attendance->clock_out_at || $attendance->isOnBreak()) {
             return back();
@@ -55,9 +55,9 @@ class AttendanceController extends Controller
         return back()->with('status', '休憩に入りました。');
     }
 
-    public function endBreak(AttendanceActionRequest $request): RedirectResponse
+    public function endBreak(Request $request): RedirectResponse
     {
-        $attendance = $request->todayAttendance();
+        $attendance = $this->todayAttendance($request);
 
         if (! $attendance) {
             return back();
@@ -74,9 +74,9 @@ class AttendanceController extends Controller
         return back()->with('status', '休憩から戻りました。');
     }
 
-    public function clockOut(AttendanceActionRequest $request): RedirectResponse
+    public function clockOut(Request $request): RedirectResponse
     {
-        $attendance = $request->todayAttendance();
+        $attendance = $this->todayAttendance($request);
 
         if (! $attendance || $attendance->isOnBreak()) {
             return back();
@@ -87,5 +87,14 @@ class AttendanceController extends Controller
         ]);
 
         return back()->with('status', '退勤しました。');
+    }
+
+    protected function todayAttendance(Request $request): ?Attendance
+    {
+        return Attendance::query()
+            ->with('breaks')
+            ->where('user_id', $request->user()->id)
+            ->whereDate('work_date', now()->timezone(config('app.timezone'))->toDateString())
+            ->first();
     }
 }
