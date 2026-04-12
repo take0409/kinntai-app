@@ -3,12 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AttendanceCorrectionRequest;
+use App\Http\Requests\UserAttendanceDetailRequest;
 use App\Http\Requests\UserAttendanceListRequest;
 use App\Models\Attendance;
 use App\Models\StampCorrectionRequest;
-use Carbon\CarbonImmutable;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class UserAttendanceController extends Controller
@@ -41,10 +40,8 @@ class UserAttendanceController extends Controller
         ]);
     }
 
-    public function show(Request $request, Attendance $attendance)
+    public function show(UserAttendanceDetailRequest $request, Attendance $attendance)
     {
-        abort_unless($attendance->user_id === $request->user()->id, 404);
-
         $attendance->load(['user', 'breaks', 'pendingCorrectionRequest']);
 
         return view('attendance.show', [
@@ -56,8 +53,6 @@ class UserAttendanceController extends Controller
 
     public function update(AttendanceCorrectionRequest $request, Attendance $attendance): RedirectResponse
     {
-        abort_unless($attendance->user_id === $request->user()->id, 404);
-
         if ($attendance->pendingCorrectionRequest()->exists()) {
             return back()->withErrors([
                 'attendance' => '承認待ちのため修正はできません。',

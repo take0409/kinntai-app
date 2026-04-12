@@ -4,11 +4,12 @@
     <section class="table-section">
         <h1 class="section-title">スタッフ一覧</h1>
         <table class="data-table">
+            <caption class="sr-only">スタッフ一覧</caption>
             <thead>
                 <tr>
-                    <th>名前</th>
-                    <th>メールアドレス</th>
-                    <th>月次勤怠</th>
+                    <th scope="col">名前</th>
+                    <th scope="col">メールアドレス</th>
+                    <th scope="col">月次勤怠</th>
                 </tr>
             </thead>
             <tbody>

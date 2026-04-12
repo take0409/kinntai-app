@@ -12,9 +12,9 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Laravel\Fortify\Fortify;
 
@@ -42,7 +42,7 @@ class FortifyServiceProvider extends ServiceProvider
         Fortify::verifyEmailView(fn () => view('auth.verify-email'));
 
         Fortify::authenticateUsing(function (Request $request) {
-            $loginRequest = new StaffLoginRequest();
+            $loginRequest = new StaffLoginRequest;
 
             Validator::make(
                 $request->all(),

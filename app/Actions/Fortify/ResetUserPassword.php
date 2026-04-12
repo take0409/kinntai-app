@@ -20,7 +20,7 @@ class ResetUserPassword implements ResetsUserPasswords
      */
     public function reset(User $user, array $input): void
     {
-        $resetPasswordRequest = new ResetPasswordRequest();
+        $resetPasswordRequest = new ResetPasswordRequest;
 
         Validator::make(
             $input,

@@ -77,7 +77,7 @@ class RequestValidationFeatureTest extends TestCase
             'password' => bcrypt('password'),
         ]);
 
-        $action = new UpdateUserPassword();
+        $action = new UpdateUserPassword;
 
         $this->expectException(ValidationException::class);
 
@@ -91,7 +91,7 @@ class RequestValidationFeatureTest extends TestCase
     public function test_reset_user_password_uses_form_request_validation_rules(): void
     {
         $user = User::factory()->create();
-        $action = new ResetUserPassword();
+        $action = new ResetUserPassword;
 
         $this->expectException(ValidationException::class);
 
@@ -105,7 +105,7 @@ class RequestValidationFeatureTest extends TestCase
     {
         $user = User::factory()->create();
         User::factory()->create(['email' => 'duplicate@example.com']);
-        $action = new UpdateUserProfileInformation();
+        $action = new UpdateUserProfileInformation;
 
         $this->expectException(ValidationException::class);
 

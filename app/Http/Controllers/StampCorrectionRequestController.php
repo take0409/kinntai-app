@@ -6,7 +6,6 @@ use App\Http\Requests\StampCorrectionApprovalRequest;
 use App\Http\Requests\StampCorrectionRequestIndexRequest;
 use App\Models\StampCorrectionRequest;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
 class StampCorrectionRequestController extends Controller

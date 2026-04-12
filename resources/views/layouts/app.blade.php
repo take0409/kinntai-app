@@ -20,7 +20,7 @@
                 @else
                     <a href="/attendance">勤怠</a>
                     <a href="/attendance/list">勤怠一覧</a>
-                    <a href="/stamp_correction_request/list">申請</a>
+                    <a href="/stamp_correction_request/list">申請一覧</a>
                 @endif
                 <form action="{{ route('logout') }}" method="post">
                     @csrf

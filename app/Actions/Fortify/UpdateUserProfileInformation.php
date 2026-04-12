@@ -20,7 +20,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      */
     public function update(User $user, array $input): void
     {
-        $updateProfileInformationRequest = new UpdateProfileInformationRequest();
+        $updateProfileInformationRequest = new UpdateProfileInformationRequest;
         $updateProfileInformationRequest->setUserResolver(static fn () => $user);
 
         Validator::make(

@@ -6,13 +6,13 @@
         <form action="/login" method="post" class="auth-form">
             @csrf
             <div class="field-group">
-                <label>メールアドレス</label>
-                <input type="email" name="email" value="{{ old('email') }}" class="{{ $errors->has('email') ? 'input-error' : '' }}">
+                <label for="email">メールアドレス</label>
+                <input id="email" type="email" name="email" value="{{ old('email') }}" class="{{ $errors->has('email') ? 'input-error' : '' }}">
                 @error('email')<p class="field-error">{{ $message }}</p>@enderror
             </div>
             <div class="field-group">
-                <label>パスワード</label>
-                <input type="password" name="password" class="{{ $errors->has('password') ? 'input-error' : '' }}">
+                <label for="password">パスワード</label>
+                <input id="password" type="password" name="password" class="{{ $errors->has('password') ? 'input-error' : '' }}">
                 @error('password')<p class="field-error">{{ $message }}</p>@enderror
             </div>
             <button type="submit" class="button button-primary">ログインする</button>

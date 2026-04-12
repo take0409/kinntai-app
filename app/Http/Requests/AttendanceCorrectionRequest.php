@@ -10,7 +10,17 @@ class AttendanceCorrectionRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true;
+        $attendance = $this->route('attendance');
+
+        return $attendance !== null
+            && $this->user() !== null
+            && ! $this->user()->is_admin
+            && $attendance->user_id === $this->user()->id;
+    }
+
+    protected function failedAuthorization(): void
+    {
+        abort(404);
     }
 
     public function rules(): array
@@ -55,6 +65,7 @@ class AttendanceCorrectionRequest extends FormRequest
 
                 if (($start && ! $end) || (! $start && $end)) {
                     $validator->errors()->add("break{$index}_start", '休憩時間が不適切な値です');
+
                     continue;
                 }
 

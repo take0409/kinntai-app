@@ -10,14 +10,15 @@
         </div>
 
         <table class="data-table">
+            <caption class="sr-only">勤怠一覧</caption>
             <thead>
                 <tr>
-                    <th>日付</th>
-                    <th>出勤</th>
-                    <th>退勤</th>
-                    <th>休憩</th>
-                    <th>合計</th>
-                    <th>詳細</th>
+                    <th scope="col">日付</th>
+                    <th scope="col">出勤</th>
+                    <th scope="col">退勤</th>
+                    <th scope="col">休憩</th>
+                    <th scope="col">合計</th>
+                    <th scope="col">詳細</th>
                 </tr>
             </thead>
             <tbody>

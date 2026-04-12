@@ -9,6 +9,7 @@ Laravel・Fortify・MySQL・Docker で構築した勤怠管理アプリです。
 2. Docker を起動してコンテナを立ち上げます。
 3. 依存関係をインストールし、アプリケーションキーを作成します。
 4. マイグレーションとシーディングを実行します。
+5. テストを実行して動作確認します。
 
 ```bash
 cp .env.example .env
@@ -16,7 +17,36 @@ docker compose up -d --build
 docker compose exec php composer install
 docker compose exec php php artisan key:generate
 docker compose exec php php artisan migrate:fresh --seed
+docker compose exec php php artisan test
 ```
+
+## テスト環境
+
+PHPUnit は MySQL のテスト用データベース `attendance_test` を使用します。  
+`docker/mysql/init/01-create-testing-database.sql` により、MySQL コンテナの初回作成時に `attendance_test` が自動作成されます。
+
+既に `mysql-data` ボリュームが作成済みで初期化SQLが実行されない場合は、以下のコマンドでテスト用データベースを作成してください。
+
+```bash
+docker compose exec mysql mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS attendance_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; GRANT ALL PRIVILEGES ON attendance_test.* TO 'laravel'@'%'; FLUSH PRIVILEGES;"
+```
+
+テスト実行時は `phpunit.xml` の設定により、アプリ本体の `attendance` ではなく `attendance_test` に接続します。
+
+```bash
+docker compose exec php php artisan config:clear
+docker compose exec php php artisan test
+```
+
+実装済みのテスト内容は以下です。
+
+- 認証: 会員登録、ログイン、管理者ログイン、メール認証、認証メール再送
+- 一般ユーザー勤怠: 出勤、休憩入、休憩戻、退勤、勤務ステータス表示
+- 一般ユーザー勤怠一覧: 月別一覧、前月/翌月表示、勤怠詳細リンク
+- 勤怠修正申請: 入力バリデーション、申請作成、承認待ち申請の二重申請防止
+- 管理者: 日別勤怠一覧、勤怠詳細更新、スタッフ一覧、スタッフ別月次一覧、CSV出力
+- 申請承認: 申請一覧のステータス絞り込み、承認処理、一般ユーザーによる承認操作の拒否
+- FormRequest: 月/日付/ステータスのクエリ検証、パスワード/プロフィール更新の検証、管理者権限検証
 
 ## 使用技術
 
@@ -33,6 +63,7 @@ docker compose exec php php artisan migrate:fresh --seed
 - 一般ユーザー: http://localhost/login
 - 管理者: http://localhost/admin/login
 - MailHog: http://localhost:8025
+- 勤怠一覧トップ: http://localhost/attendance
 
 ## ログイン情報
 
@@ -50,6 +81,13 @@ docker compose exec php php artisan migrate:fresh --seed
 - 当月の勤怠データ
 - 承認待ち申請1件
 - 承認済み申請1件
+
+## 動作確認
+
+- 一般ユーザーでログイン後、出勤・休憩入・休憩戻・退勤ができます。
+- 一般ユーザーは勤怠詳細から修正申請を送信できます。
+- 管理者は日次勤怠一覧、スタッフ別月次一覧、申請承認、CSV出力を利用できます。
+- 自動テストは `docker compose exec php php artisan test` で実行できます。
 
 ## ER 図
 

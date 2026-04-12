@@ -20,7 +20,7 @@ class UpdateUserPassword implements UpdatesUserPasswords
      */
     public function update(User $user, array $input): void
     {
-        $updatePasswordRequest = new UpdatePasswordRequest();
+        $updatePasswordRequest = new UpdatePasswordRequest;
 
         Validator::make(
             $input,

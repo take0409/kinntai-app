@@ -4,18 +4,19 @@
     <section class="table-section">
         <h1 class="section-title">申請一覧</h1>
         <div class="tab-nav">
-            <a href="?status=pending" class="{{ $status === 'pending' ? 'is-active' : '' }}">承認待ち</a>
-            <a href="?status=approved" class="{{ $status === 'approved' ? 'is-active' : '' }}">承認済み</a>
+            <a href="?status=pending" class="{{ $status === 'pending' ? 'is-active' : '' }}" aria-current="{{ $status === 'pending' ? 'page' : 'false' }}">承認待ち</a>
+            <a href="?status=approved" class="{{ $status === 'approved' ? 'is-active' : '' }}" aria-current="{{ $status === 'approved' ? 'page' : 'false' }}">承認済み</a>
         </div>
         <table class="data-table">
+            <caption class="sr-only">申請一覧</caption>
             <thead>
                 <tr>
-                    <th>状態</th>
-                    <th>名前</th>
-                    <th>対象日時</th>
-                    <th>申請理由</th>
-                    <th>申請日時</th>
-                    <th>詳細</th>
+                    <th scope="col">状態</th>
+                    <th scope="col">名前</th>
+                    <th scope="col">対象日時</th>
+                    <th scope="col">申請理由</th>
+                    <th scope="col">申請日時</th>
+                    <th scope="col">詳細</th>
                 </tr>
             </thead>
             <tbody>
