@@ -5,20 +5,24 @@ Laravel・Fortify・MySQL・Docker で構築した勤怠管理アプリです。
 
 ## 環境構築
 
-1. リポジトリを取得して `.env.example` を `.env` にコピーします。
-2. Docker を起動してコンテナを立ち上げます。
-3. 依存関係をインストールし、アプリケーションキーを作成します。
-4. マイグレーションとシーディングを実行します。
-5. テストを実行して動作確認します。
+1. Docker Desktop を起動します。
+2. プロジェクト直下で初期化コマンドを実行します。
 
 ```bash
-cp .env.example .env
+make init
+```
+
+手動で実行する場合は、以下のコマンドを順番に実行してください。
+
+```bash
 docker compose up -d --build
 docker compose exec php composer install
+docker compose exec php cp .env.example .env
 docker compose exec php php artisan key:generate
 docker compose exec php php artisan migrate:fresh --seed
-docker compose exec php php artisan test
 ```
+
+Laravel 本体は `src` ディレクトリ配下に配置しています。
 
 ## テスト環境
 
@@ -46,6 +50,12 @@ DB_PASSWORD=root
 docker compose exec php php artisan config:clear
 docker compose exec php php artisan migrate:fresh --env=testing
 docker compose exec php ./vendor/bin/phpunit
+```
+
+Makefile を使用する場合は、以下のコマンドで同じ手順を実行できます。
+
+```bash
+make test
 ```
 
 実装済みのテスト内容は以下です。
@@ -97,7 +107,7 @@ docker compose exec php ./vendor/bin/phpunit
 - 一般ユーザーでログイン後、出勤・休憩入・休憩戻・退勤ができます。
 - 一般ユーザーは勤怠詳細から修正申請を送信できます。
 - 管理者は日次勤怠一覧、スタッフ別月次一覧、申請承認、CSV出力を利用できます。
-- 自動テストは `docker compose exec php php artisan test` で実行できます。
+- 自動テストは `make test` で実行できます。
 
 ## ER 図
 
