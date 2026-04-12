@@ -22,20 +22,30 @@ docker compose exec php php artisan test
 
 ## テスト環境
 
-PHPUnit は MySQL のテスト用データベース `attendance_test` を使用します。  
-`docker/mysql/init/01-create-testing-database.sql` により、MySQL コンテナの初回作成時に `attendance_test` が自動作成されます。
-
-既に `mysql-data` ボリュームが作成済みで初期化SQLが実行されない場合は、以下のコマンドでテスト用データベースを作成してください。
+PHPUnit は MySQL のテスト用データベース `demo_test` を使用します。  
+アプリ本体の `attendance` とは別に、テスト専用のデータベースを作成してください。
 
 ```bash
-docker compose exec mysql mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS attendance_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; GRANT ALL PRIVILEGES ON attendance_test.* TO 'laravel'@'%'; FLUSH PRIVILEGES;"
+docker compose exec mysql mysql -uroot -proot -e "CREATE DATABASE IF NOT EXISTS demo_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;"
 ```
 
-テスト実行時は `phpunit.xml` の設定により、アプリ本体の `attendance` ではなく `attendance_test` に接続します。
+テスト用の環境設定は `.env.testing` に記載しています。
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=demo_test
+DB_USERNAME=root
+DB_PASSWORD=root
+```
+
+テスト実行前に、テスト用データベースへマイグレーションを実行します。
 
 ```bash
 docker compose exec php php artisan config:clear
-docker compose exec php php artisan test
+docker compose exec php php artisan migrate:fresh --env=testing
+docker compose exec php ./vendor/bin/phpunit
 ```
 
 実装済みのテスト内容は以下です。
