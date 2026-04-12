@@ -7,11 +7,17 @@ use Illuminate\Validation\Rule;
 
 class UpdateProfileInformationRequest extends FormRequest
 {
+    /**
+     * プロフィール更新フォームの送信を許可する。
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * 名前とメールアドレスの入力ルールを定義する。
+     */
     public function rules(): array
     {
         $user = $this->user();
@@ -28,6 +34,9 @@ class UpdateProfileInformationRequest extends FormRequest
         ];
     }
 
+    /**
+     * バリデーションメッセージで表示する項目名を定義する。
+     */
     public function attributes(): array
     {
         return [

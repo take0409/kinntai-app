@@ -9,11 +9,17 @@ class UpdatePasswordRequest extends FormRequest
 {
     use PasswordValidationRules;
 
+    /**
+     * パスワード更新フォームの送信を許可する。
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * 現在のパスワードと新しいパスワードの入力ルールを定義する。
+     */
     public function rules(): array
     {
         return [
@@ -22,6 +28,9 @@ class UpdatePasswordRequest extends FormRequest
         ];
     }
 
+    /**
+     * バリデーションメッセージで表示する項目名を定義する。
+     */
     public function attributes(): array
     {
         return [
@@ -30,6 +39,9 @@ class UpdatePasswordRequest extends FormRequest
         ];
     }
 
+    /**
+     * 現在のパスワード不一致時のメッセージを定義する。
+     */
     public function messages(): array
     {
         return [

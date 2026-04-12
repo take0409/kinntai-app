@@ -12,6 +12,9 @@ use Illuminate\Support\Carbon;
 
 class UserAttendanceController extends Controller
 {
+    /**
+     * 一般ユーザーの月別勤怠一覧を表示する。
+     */
     public function index(Request $request)
     {
         $month = $this->selectedMonth($request);
@@ -40,6 +43,9 @@ class UserAttendanceController extends Controller
         ]);
     }
 
+    /**
+     * 一般ユーザー本人の勤怠詳細を表示する。
+     */
     public function show(Request $request, Attendance $attendance)
     {
         abort_unless($attendance->user_id === $request->user()->id, 404);
@@ -53,6 +59,9 @@ class UserAttendanceController extends Controller
         ]);
     }
 
+    /**
+     * 一般ユーザーの勤怠修正申請を登録する。
+     */
     public function update(AttendanceCorrectionRequest $request, Attendance $attendance): RedirectResponse
     {
         if ($attendance->pendingCorrectionRequest()->exists()) {
@@ -75,11 +84,17 @@ class UserAttendanceController extends Controller
         return redirect('/stamp_correction_request/list')->with('status', '修正申請を送信しました。');
     }
 
+    /**
+     * 勤務日と入力時刻を結合して日時に変換する。
+     */
     protected function combineDateTime(string $date, string $time): Carbon
     {
         return Carbon::parse("{$date} {$time}", config('app.timezone'));
     }
 
+    /**
+     * 月指定が不正な場合は当月を返す。
+     */
     protected function selectedMonth(Request $request): CarbonImmutable
     {
         $month = $request->string('month')->toString();

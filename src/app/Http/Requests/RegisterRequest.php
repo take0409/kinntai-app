@@ -10,11 +10,17 @@ class RegisterRequest extends FormRequest
 {
     use PasswordValidationRules;
 
+    /**
+     * 会員登録フォームの送信を許可する。
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * 会員登録に必要な入力項目を定義する。
+     */
     public function rules(): array
     {
         return [
@@ -30,6 +36,9 @@ class RegisterRequest extends FormRequest
         ];
     }
 
+    /**
+     * バリデーションメッセージで表示する項目名を定義する。
+     */
     public function attributes(): array
     {
         return [

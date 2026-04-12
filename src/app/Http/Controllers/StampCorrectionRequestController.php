@@ -10,6 +10,9 @@ use Illuminate\Support\Carbon;
 
 class StampCorrectionRequestController extends Controller
 {
+    /**
+     * 勤怠修正申請の一覧を表示する。
+     */
     public function index(Request $request)
     {
         $status = $request->string('status')->toString() === 'approved' ? 'approved' : 'pending';
@@ -29,6 +32,9 @@ class StampCorrectionRequestController extends Controller
         ]);
     }
 
+    /**
+     * 管理者用の勤怠修正申請詳細を表示する。
+     */
     public function show(StampCorrectionRequest $stampCorrectionRequest)
     {
         $stampCorrectionRequest->load('user', 'attendance');
@@ -39,6 +45,9 @@ class StampCorrectionRequestController extends Controller
         ]);
     }
 
+    /**
+     * 管理者が勤怠修正申請を承認し、勤怠へ反映する。
+     */
     public function approve(StampCorrectionApprovalRequest $request, StampCorrectionRequest $stampCorrectionRequest): RedirectResponse
     {
         if ($stampCorrectionRequest->status === 'approved') {

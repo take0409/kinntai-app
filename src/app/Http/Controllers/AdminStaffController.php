@@ -10,6 +10,9 @@ use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AdminStaffController extends Controller
 {
+    /**
+     * 管理者用のスタッフ一覧を表示する。
+     */
     public function index()
     {
         return view('admin.staff.index', [
@@ -17,6 +20,9 @@ class AdminStaffController extends Controller
         ]);
     }
 
+    /**
+     * 指定スタッフの月別勤怠一覧を表示する。
+     */
     public function show(Request $request, User $user)
     {
         abort_if($user->is_admin, 403);
@@ -47,6 +53,9 @@ class AdminStaffController extends Controller
         ]);
     }
 
+    /**
+     * 指定スタッフの月別勤怠をCSVで出力する。
+     */
     public function exportCsv(Request $request, User $user): StreamedResponse
     {
         abort_if($user->is_admin, 403);
@@ -82,6 +91,9 @@ class AdminStaffController extends Controller
         }, sprintf('staff_%s_%s.csv', $user->id, $month->format('Ym')));
     }
 
+    /**
+     * 月指定が不正な場合は当月を返す。
+     */
     protected function selectedMonth(Request $request): CarbonImmutable
     {
         $month = $request->string('month')->toString();

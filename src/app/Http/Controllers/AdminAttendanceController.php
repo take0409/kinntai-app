@@ -12,6 +12,9 @@ use Illuminate\Support\Carbon;
 
 class AdminAttendanceController extends Controller
 {
+    /**
+     * 管理者の日別勤怠一覧を表示する。
+     */
     public function index(Request $request)
     {
         $date = $this->targetDate($request);
@@ -33,6 +36,9 @@ class AdminAttendanceController extends Controller
         ]);
     }
 
+    /**
+     * 管理者用の勤怠詳細画面を表示する。
+     */
     public function show(Attendance $attendance)
     {
         $attendance->load('user', 'breaks');
@@ -43,6 +49,9 @@ class AdminAttendanceController extends Controller
         ]);
     }
 
+    /**
+     * 管理者が勤怠詳細を直接修正する。
+     */
     public function update(AdminAttendanceUpdateRequest $request, Attendance $attendance): RedirectResponse
     {
         $attendance->update([
@@ -63,11 +72,17 @@ class AdminAttendanceController extends Controller
         return back()->with('status', '勤怠情報を更新しました。');
     }
 
+    /**
+     * 勤務日と入力時刻を結合して日時に変換する。
+     */
     protected function combineDateTime(string $date, string $time): Carbon
     {
         return Carbon::parse("{$date} {$time}", config('app.timezone'));
     }
 
+    /**
+     * 日付指定が不正な場合は当日を返す。
+     */
     protected function targetDate(Request $request): CarbonImmutable
     {
         $date = $request->string('date')->toString();

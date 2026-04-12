@@ -8,6 +8,9 @@ use Illuminate\Validation\Validator;
 
 class AttendanceCorrectionRequest extends FormRequest
 {
+    /**
+     * 勤怠本人だけが修正申請できるようにする。
+     */
     public function authorize(): bool
     {
         $attendance = $this->route('attendance');
@@ -18,11 +21,17 @@ class AttendanceCorrectionRequest extends FormRequest
             && $attendance->user_id === $this->user()->id;
     }
 
+    /**
+     * 権限がない勤怠詳細へのアクセスは404として扱う。
+     */
     protected function failedAuthorization(): void
     {
         abort(404);
     }
 
+    /**
+     * 勤怠修正申請フォームの入力ルールを定義する。
+     */
     public function rules(): array
     {
         return [
@@ -36,6 +45,9 @@ class AttendanceCorrectionRequest extends FormRequest
         ];
     }
 
+    /**
+     * バリデーションメッセージで表示する項目名を定義する。
+     */
     public function attributes(): array
     {
         return [
@@ -49,6 +61,9 @@ class AttendanceCorrectionRequest extends FormRequest
         ];
     }
 
+    /**
+     * 出退勤と休憩時間の前後関係を追加検証する。
+     */
     public function withValidator(Validator $validator): void
     {
         $validator->after(function (Validator $validator) {
@@ -80,6 +95,9 @@ class AttendanceCorrectionRequest extends FormRequest
         });
     }
 
+    /**
+     * 入力された休憩時間を保存用の配列に整形する。
+     */
     public function breakTimes(): array
     {
         $breaks = [];
@@ -99,6 +117,9 @@ class AttendanceCorrectionRequest extends FormRequest
         return $breaks;
     }
 
+    /**
+     * 時刻入力を比較用のCarbonインスタンスに変換する。
+     */
     protected function parseTime(string $key): ?Carbon
     {
         $value = $this->input($key);

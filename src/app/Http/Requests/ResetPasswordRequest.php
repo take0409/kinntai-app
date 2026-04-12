@@ -9,11 +9,17 @@ class ResetPasswordRequest extends FormRequest
 {
     use PasswordValidationRules;
 
+    /**
+     * パスワード再設定フォームの送信を許可する。
+     */
     public function authorize(): bool
     {
         return true;
     }
 
+    /**
+     * 再設定するパスワードの入力ルールを定義する。
+     */
     public function rules(): array
     {
         return [
@@ -21,6 +27,9 @@ class ResetPasswordRequest extends FormRequest
         ];
     }
 
+    /**
+     * バリデーションメッセージで表示する項目名を定義する。
+     */
     public function attributes(): array
     {
         return [

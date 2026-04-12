@@ -12,6 +12,9 @@ use Illuminate\Validation\ValidationException;
 
 class AdminAuthenticatedSessionController extends Controller
 {
+    /**
+     * 管理者ログイン画面を表示する。
+     */
     public function create()
     {
         if (auth()->check() && auth()->user()->is_admin) {
@@ -21,6 +24,9 @@ class AdminAuthenticatedSessionController extends Controller
         return view('auth.admin-login');
     }
 
+    /**
+     * 管理者ログインを実行する。
+     */
     public function store(AdminLoginRequest $request): RedirectResponse
     {
         $user = User::query()

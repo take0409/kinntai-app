@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 
 class AttendanceController extends Controller
 {
+    /**
+     * 一般ユーザーの当日打刻画面を表示する。
+     */
     public function index(Request $request)
     {
         $today = now()->timezone(config('app.timezone'));
@@ -24,6 +27,9 @@ class AttendanceController extends Controller
         ]);
     }
 
+    /**
+     * 一般ユーザーの出勤時刻を登録する。
+     */
     public function clockIn(Request $request): RedirectResponse
     {
         $now = now()->timezone(config('app.timezone'));
@@ -40,6 +46,9 @@ class AttendanceController extends Controller
         return back()->with('status', '出勤しました。');
     }
 
+    /**
+     * 一般ユーザーの休憩開始時刻を登録する。
+     */
     public function startBreak(Request $request): RedirectResponse
     {
         $attendance = $this->todayAttendance($request);
@@ -55,6 +64,9 @@ class AttendanceController extends Controller
         return back()->with('status', '休憩に入りました。');
     }
 
+    /**
+     * 一般ユーザーの休憩終了時刻を登録する。
+     */
     public function endBreak(Request $request): RedirectResponse
     {
         $attendance = $this->todayAttendance($request);
@@ -74,6 +86,9 @@ class AttendanceController extends Controller
         return back()->with('status', '休憩から戻りました。');
     }
 
+    /**
+     * 一般ユーザーの退勤時刻を登録する。
+     */
     public function clockOut(Request $request): RedirectResponse
     {
         $attendance = $this->todayAttendance($request);
@@ -89,6 +104,9 @@ class AttendanceController extends Controller
         return back()->with('status', '退勤しました。');
     }
 
+    /**
+     * ログインユーザーの当日勤怠を取得する。
+     */
     protected function todayAttendance(Request $request): ?Attendance
     {
         return Attendance::query()
