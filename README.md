@@ -80,10 +80,15 @@ make test
 
 ## URL
 
-- 一般ユーザー: http://localhost/login
-- 管理者: http://localhost/admin/login
+- 一般ユーザーログイン: http://localhost/login
+- 管理者ログイン: http://localhost/admin/login
 - MailHog: http://localhost:8025
-- 勤怠一覧トップ: http://localhost/attendance
+
+ログイン後に利用する主な画面は以下です。
+
+- 一般ユーザー打刻画面: `/attendance`
+- 一般ユーザー勤怠一覧: `/attendance/list`
+- 管理者勤怠一覧: `/admin/attendance/list`
 
 ## ログイン情報
 
